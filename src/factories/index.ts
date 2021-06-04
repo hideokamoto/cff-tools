@@ -1,2 +1,2 @@
-export * from './viewerRequest.factory'
-export * from './viewerResponse.factory'
+export * from './viewerRequest.factory';
+export * from './viewerResponse.factory';
