@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`factories/viewerResponse.factory.ts TestResponseEventFactory should match snapshot 1`] = `
+Object {
+  "context": Object {
+    "eventType": "viewer-response",
+  },
+  "request": Object {
+    "cookies": Object {
+      "id": Object {
+        "value": "CookieIdValue",
+      },
+      "loggedIn": Object {
+        "value": "false",
+      },
+    },
+    "headers": Object {
+      "accept": Object {
+        "multiValue": Array [
+          Object {
+            "value": "text/html",
+          },
+          Object {
+            "value": "application/xhtml+xml",
+          },
+        ],
+        "value": "text/html",
+      },
+      "host": Object {
+        "value": "www.example.com",
+      },
+    },
+    "method": "POST",
+    "querystring": Object {
+      "test1": Object {
+        "value": "123",
+      },
+      "test2": Object {
+        "multiValue": Array [
+          Object {
+            "value": "222",
+          },
+          Object {
+            "value": "333",
+          },
+        ],
+        "value": "222",
+      },
+    },
+    "uri": "admin/index.html",
+  },
+  "response": Object {
+    "cookies": Object {
+      "id": Object {
+        "attributes": "Expires=Wed, 05 Jan 2024 07:28:00 GMT",
+        "multiValue": Array [
+          Object {
+            "attributes": "Expires=Wed, 05 Jan 2024 07:28:00 GMT",
+            "value": "a3fWa",
+          },
+          Object {
+            "value": "a3fWb",
+          },
+        ],
+        "value": "a3fWa",
+      },
+      "loggedIn": Object {
+        "attributes": "Secure; Path=/; Domain=Example.com; Expires=Wed, 05 Jan 2024 07:28:00 GMT",
+        "value": "true",
+      },
+    },
+    "headers": Object {
+      "content-length": Object {
+        "value": "9593",
+      },
+      "content-type": Object {
+        "value": "text/html; charset=UTF-8",
+      },
+      "server": Object {
+        "value": "CustomOriginServer",
+      },
+    },
+    "statusCode": 404,
+    "statusDescription": "Not Found",
+  },
+  "version": "1.0",
+  "viewer": Object {
+    "ip": "127.0.0.0",
+  },
+}
+`;

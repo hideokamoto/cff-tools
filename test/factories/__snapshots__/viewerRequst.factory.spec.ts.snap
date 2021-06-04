@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`factories/viewerRequest.factory.ts TestRequestEventFactory should match snapshot 1`] = `
+Object {
+  "context": Object {
+    "eventType": "viewer-request",
+  },
+  "request": Object {
+    "cookies": Object {
+      "id": Object {
+        "value": "CookieIdValue",
+      },
+      "loggedIn": Object {
+        "value": "false",
+      },
+    },
+    "headers": Object {
+      "accept": Object {
+        "multiValue": Array [
+          Object {
+            "value": "text/html",
+          },
+          Object {
+            "value": "application/xhtml+xml",
+          },
+        ],
+        "value": "text/html",
+      },
+      "host": Object {
+        "value": "www.example.com",
+      },
+    },
+    "method": "POST",
+    "querystring": Object {
+      "test1": Object {
+        "value": "123",
+      },
+      "test2": Object {
+        "multiValue": Array [
+          Object {
+            "value": "222",
+          },
+          Object {
+            "value": "333",
+          },
+        ],
+        "value": "222",
+      },
+    },
+    "uri": "admin/index.html",
+  },
+  "version": "1.0",
+  "viewer": Object {
+    "ip": "127.0.0.0",
+  },
+}
+`;
