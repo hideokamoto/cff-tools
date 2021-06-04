@@ -29,10 +29,15 @@ export class FunctionTask {
      * If function already deployed, will update it.
      * Or not, will create a new function.
      */
-     public async putFunction(): Promise<void> {
+     public async putFunction(options?: {
+         withPublish?: boolean
+     }): Promise<void> {
         try {
             await this.function.describeFunction('DEVELOPMENT')
             await this.function.updateFunction()
+            if (options && options.withPublish) {
+                await this.publish()
+            }
         } catch (e) {
             if (e.code === 'NoSuchFunctionExists') {
                 await this.function.createFunction()
@@ -42,8 +47,10 @@ export class FunctionTask {
         }
     }
 
-    public async putAndGetFunction(): Promise<DescribeFunctionResult> {
-        await this.putFunction()
+    public async putAndGetFunction(options?: {
+        withPublish?: boolean
+    }): Promise<DescribeFunctionResult> {
+        await this.putFunction(options)
         return this.function.describeFunction('DEVELOPMENT')
     }
 
