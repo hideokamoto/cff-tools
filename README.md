@@ -1,103 +1,147 @@
-# TSDX User Guide
+# CloudFront Function management Tools (cff-tools)
 
-Congrats! You just saved yourself hours of work by bootstrapping this project with TSDX. Let’s get you oriented with what’s here and how to use it.
-
-> This TSDX setup is meant for developing libraries (not apps!) that can be published to NPM. If you’re looking to build a Node app, you could use `ts-node-dev`, plain `ts-node`, or simple `tsc`.
-
-> If you’re new to TypeScript, checkout [this handy cheatsheet](https://devhints.io/typescript)
-
-## Commands
-
-TSDX scaffolds your new library inside `/src`.
-
-To run TSDX, use:
+## Install
 
 ```bash
-npm start # or yarn start
+$ yarn add cff-tools
+
+or
+
+$ npm install --save cff-tools
 ```
 
-This builds to `/dist` and runs the project in watch mode so any edits you save inside `src` causes a rebuild to `/dist`.
+## Define Function
 
-To do a one-off build, use `npm run build` or `yarn build`.
 
-To run tests, use `npm test` or `yarn test`.
+### Inline code
 
-## Configuration
+```typesctipt
+import { Function } from "cff-tools";
 
-Code quality is set up for you with `prettier`, `husky`, and `lint-staged`. Adjust the respective fields in `package.json` accordingly.
 
-### Jest
+export const ViewerResponseFunction = new Function({
+    name: 'ViewerResponseFunctionFromAPI',
+    runtime: 'cloudfront-js-1.0'
+  }
+).putInlineCode(`
+function handler(event) {
+    var response = event.response;
+    var headers = response.headers;
 
-Jest tests are set up to run with `npm test` or `yarn test`.
+    // Set HTTP security headers
+    // Since JavaScript doesn't allow for hyphens in variable names, we use the dict["key"] notation 
+    headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'}; 
+    headers['content-security-policy'] = { value: "default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'"}; 
+    headers['x-content-type-options'] = { value: 'nosniff'}; 
+    headers['x-frame-options'] = {value: 'DENY'}; 
+    headers['x-xss-protection'] = {value: '1; mode=block'}; 
 
-### Bundle Analysis
-
-[`size-limit`](https://github.com/ai/size-limit) is set up to calculate the real cost of your library with `npm run size` and visualize the bundle with `npm run analyze`.
-
-#### Setup Files
-
-This is the folder structure we set up for you:
-
-```txt
-/src
-  index.tsx       # EDIT THIS
-/test
-  blah.test.tsx   # EDIT THIS
-.gitignore
-package.json
-README.md         # EDIT THIS
-tsconfig.json
-```
-
-### Rollup
-
-TSDX uses [Rollup](https://rollupjs.org) as a bundler and generates multiple rollup configs for various module formats and build settings. See [Optimizations](#optimizations) for details.
-
-### TypeScript
-
-`tsconfig.json` is set up to interpret `dom` and `esnext` types, as well as `react` for `jsx`. Adjust according to your needs.
-
-## Continuous Integration
-
-### GitHub Actions
-
-Two actions are added by default:
-
-- `main` which installs deps w/ cache, lints, tests, and builds on all pushes against a Node and OS matrix
-- `size` which comments cost comparison of your library on every pull request using [`size-limit`](https://github.com/ai/size-limit)
-
-## Optimizations
-
-Please see the main `tsdx` [optimizations docs](https://github.com/palmerhq/tsdx#optimizations). In particular, know that you can take advantage of development-only optimizations:
-
-```js
-// ./types/index.d.ts
-declare var __DEV__: boolean;
-
-// inside your code...
-if (__DEV__) {
-  console.log('foo');
+    return response;
 }
+`)
 ```
 
-You can also choose to install and use [invariant](https://github.com/palmerhq/tsdx#invariant) and [warning](https://github.com/palmerhq/tsdx#warning) functions.
+### Import JavaScript file from path
 
-## Module Formats
+```typescript
+import { join } from 'path'
+import { Function } from "cff-tools";
 
-CJS, ESModules, and UMD module formats are supported.
+export const ViewerRequestFunction = new Function({
+    name: 'ViewerRequestFunctionFromAPI',
+    runtime: 'cloudfront-js-1.0'
+  }, {
+    functionFilePath: join(__dirname, '../functions/viewer_request.js')
+  }
+)
+```
 
-The appropriate paths are configured in `package.json` and `dist/index.js` accordingly. Please report if any issues are found.
+## Create/Update function
 
-## Named Exports
+The `putFunction` method will create or update your CloudFront function.
+When the defined function name exists, it will update.
+If not, will create a new one.
 
-Per Palmer Group guidelines, [always use named exports.](https://github.com/palmerhq/typescript#exports) Code split inside your React app instead of your React library.
+```typescript
+import { FunctionTask } from 'cff-tools'
+import { ViewerResponseFunction } from './test'
 
-## Including Styles
+(async () => {
+  const cfFunction = new FunctionTask(ViewerResponseFunction)
+  await cfFunction.putFunction()
+})()
+```
 
-There are many ways to ship styles, including with CSS-in-JS. TSDX has no opinion on this, configure how you like.
+If you given `withPublish` attributes, the function will publish automatically.
 
-For vanilla CSS, you can include it at the root directory and add it to the `files` section in your `package.json`, so that it can be imported separately by your users and run through their bundler's loader.
+```typescript
+import { FunctionTask } from 'cff-tools'
+import { ViewerResponseFunction } from './test'
 
-## Publishing to NPM
+(async () => {
+  const cfFunction = new FunctionTask(ViewerResponseFunction)
+  await cfFunction.putFunction({
+    withPublish: true
+  })
+})()
+```
 
-We recommend using [np](https://github.com/sindresorhus/np).
+
+## Publish function
+
+If you already deployed the function, you can publish it by these script
+
+```typescript
+import { FunctionTask } from 'cff-tools'
+import { ViewerResponseFunction } from './function'
+
+(async () => {
+  const cfFunction = new FunctionTask(ViewerResponseFunction)
+  await cfFunction.publish()
+})()
+```
+
+## E2E testing
+
+We can test the funcion by using Jest and it.
+
+```typescript
+
+import { TestResponseEventFactory, FunctionTask } from 'cff-tools';
+import { ViewerResponseFunction } from './function'
+
+describe('e2e', () => {
+  it('should put security headers', async () => {
+    const task = new FunctionTask(ViewerResponseFunction);
+    const event = TestResponseEventFactory.create();
+    const result = await task.runTest(event, 'DEVELOPMENT');
+    if (!result || !result.FunctionOutput) return;
+    expect(JSON.parse(result.FunctionOutput)).toEqual({
+      response: {
+        headers: {
+          'content-security-policy': {
+            value:
+              "default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'",
+          },
+          'x-xss-protection': {
+            value: '1; mode=block',
+          },
+          'x-content-type-options': {
+            value: 'nosniff',
+          },
+          'x-frame-options': {
+            value: 'DENY',
+          },
+          'strict-transport-security': {
+            value: 'max-age=63072000; includeSubdomains; preload',
+          },
+        },
+        statusDescription: 'OK',
+        cookies: {},
+        statusCode: 200,
+      },
+    });
+  });
+});
+
+```
