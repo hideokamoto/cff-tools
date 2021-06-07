@@ -25,8 +25,8 @@ export interface FunctionOptions {
 
 export class Function {
   private readonly client: CloudFront = new CloudFront();
-  private readonly name: string;
-  private readonly runtime: CloudFrontFunctionRuntime;
+  public readonly name: string;
+  public readonly runtime: CloudFrontFunctionRuntime;
   private options: Required<FunctionOptions> = {
     comment: '',
     etag: '',
