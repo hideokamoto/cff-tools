@@ -51,9 +51,9 @@ export class Function {
     }
   }
 
-  private _getFunctionCode(): FunctionBlob {
+  public getFunctionCode(): FunctionBlob {
     if (this.options.functionFilePath) {
-      return readFileSync(this.options.functionFilePath);
+      return readFileSync(this.options.functionFilePath, { encoding: 'utf-8' });
     }
     return this.inlineCode;
   }
@@ -100,7 +100,7 @@ export class Function {
         Runtime: this.runtime,
         Comment: this.options.comment,
       },
-      FunctionCode: this._getFunctionCode(),
+      FunctionCode: this.getFunctionCode(),
       IfMatch: etag || this.options.etag,
     };
     return this.client.updateFunction(request).promise();
@@ -113,7 +113,7 @@ export class Function {
         Runtime: this.runtime,
         Comment: this.options.comment,
       },
-      FunctionCode: this._getFunctionCode(),
+      FunctionCode: this.getFunctionCode(),
     };
     const result = await this.client.createFunction(request).promise();
     if (result.ETag) this.setEtag(result.ETag);
