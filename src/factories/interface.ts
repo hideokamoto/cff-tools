@@ -7,13 +7,14 @@ import {
   Cookies,
   QueryString,
   FunctionResposne,
+  TestResponseEvent,
 } from '../interfaces';
 
 export interface TestEventBuilder {
-  getEvent(): TestRequestEvent;
   getEventObject(): FunctionEventObject;
 }
 export interface TestRequestEventBuilder extends TestEventBuilder {
+  getEvent(): TestRequestEvent;
   setViewerIP(ip: string): TestRequestEventBuilder;
   setRequestMethod(method: RequestMethod): TestRequestEventBuilder;
   setRequestUri(uri: string): TestRequestEventBuilder;
@@ -24,6 +25,7 @@ export interface TestRequestEventBuilder extends TestEventBuilder {
 }
 
 export interface TestResponseEventBuilder extends TestEventBuilder {
+  getEvent(): TestResponseEvent;
   setViewerIP(ip: string): TestResponseEventBuilder;
   setRequestMethod(method: RequestMethod): TestResponseEventBuilder;
   setRequestUri(uri: string): TestResponseEventBuilder;

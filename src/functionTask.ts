@@ -29,6 +29,17 @@ export class FunctionTask {
   }
 
   /**
+   * If you want to use the FunctionOutput attribute only, use this
+   */
+  public async runTestToGetFunctionOutput(builder: TestEventBuilder, stage: FunctionStage) {
+    const result = await this.runTest(builder, stage)
+    if (!result || !result.FunctionOutput) {
+        throw new Error('AWS API may returns unexpected response. Please use runTest instead and handle the response manually.')
+    }
+    return JSON.parse(result.FunctionOutput)
+  }
+
+  /**
    * If function already deployed, will update it.
    * Or not, will create a new function.
    */
