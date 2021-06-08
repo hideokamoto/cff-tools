@@ -105,6 +105,50 @@ import { ViewerResponseFunction } from './function'
 
 We can test the funcion by using Jest and it.
 
+
+```typescript
+
+import { TestResponseEventFactory, FunctionTask } from 'cff-tools';
+import { ViewerResponseFunction } from './function'
+
+describe('e2e', () => {
+  it('should put security headers', async () => {
+    const task = new FunctionTask(ViewerResponseFunction);
+    const event = TestResponseEventFactory.create();
+    const result = await task.runTestToGetFunctionOutput(event, 'DEVELOPMENT');
+    expect(result).toEqual({
+      response: {
+        headers: {
+          'content-security-policy': {
+            value:
+              "default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'",
+          },
+          'x-xss-protection': {
+            value: '1; mode=block',
+          },
+          'x-content-type-options': {
+            value: 'nosniff',
+          },
+          'x-frame-options': {
+            value: 'DENY',
+          },
+          'strict-transport-security': {
+            value: 'max-age=63072000; includeSubdomains; preload',
+          },
+        },
+        statusDescription: 'OK',
+        cookies: {},
+        statusCode: 200,
+      },
+    });
+  });
+});
+
+```
+
+
+Or, we can get the native TestFunction API response by using `runTest` method instead.
+
 ```typescript
 
 import { TestResponseEventFactory, FunctionTask } from 'cff-tools';
