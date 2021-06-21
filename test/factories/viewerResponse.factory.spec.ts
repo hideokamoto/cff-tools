@@ -32,6 +32,9 @@ describe('factories/viewerResponse.factory.ts', () => {
     it('should match snapshot', () => {
       const builder = TestResponseEventFactory.create();
       builder
+        .setRequestContext({
+          distributionId: 'EXXX',
+        })
         .setViewerIP('127.0.0.0')
         .setRequestMethod('POST')
         .setRequestUri('admin/index.html')

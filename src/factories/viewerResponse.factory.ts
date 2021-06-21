@@ -6,6 +6,7 @@ import {
   Headers,
   Cookies,
   QueryString,
+  RequestContext,
   FunctionResposne,
 } from '../interfaces';
 import { TestResponseEventBuilder } from './interface';
@@ -38,6 +39,13 @@ export class TestResponseEventFactory {
       },
     };
     return {
+      setRequestContext(context: RequestContext) {
+        event.context = {
+          ...event.context,
+          ...context,
+        };
+        return this;
+      },
       setViewerIP(ip: string) {
         event.viewer.ip = ip;
         return this;

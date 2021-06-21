@@ -3,6 +3,7 @@
 exports[`factories/viewerResponse.factory.ts TestResponseEventFactory should match snapshot 1`] = `
 Object {
   "context": Object {
+    "distributionId": "EXXX",
     "eventType": "viewer-response",
   },
   "request": Object {

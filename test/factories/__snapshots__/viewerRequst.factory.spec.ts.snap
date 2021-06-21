@@ -3,6 +3,7 @@
 exports[`factories/viewerRequest.factory.ts TestRequestEventFactory should match snapshot 1`] = `
 Object {
   "context": Object {
+    "distributionId": "EXXX",
     "eventType": "viewer-request",
   },
   "request": Object {

@@ -26,6 +26,9 @@ describe('factories/viewerRequest.factory.ts', () => {
     it('should match snapshot', () => {
       const builder = TestRequestEventFactory.create();
       builder
+        .setRequestContext({
+          distributionId: 'EXXX',
+        })
         .setViewerIP('127.0.0.0')
         .setRequestMethod('POST')
         .setRequestUri('admin/index.html')

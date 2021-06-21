@@ -41,12 +41,14 @@ export interface FunctionResposne {
   cookies: Cookies;
   statusCode: number;
 }
+export interface RequestContext {
+  eventType: FunctionEventType;
+  distributionId?: string;
+}
 
 export interface TestRequestEvent {
   version: string;
-  context: {
-    eventType: FunctionEventType;
-  };
+  context: RequestContext;
   viewer: {
     ip: string;
   };
