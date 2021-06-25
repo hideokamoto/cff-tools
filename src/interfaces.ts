@@ -35,7 +35,7 @@ export interface FunctionRequest {
   cookies: Cookies;
 }
 
-export interface FunctionResposne {
+export interface FunctionResponse {
   statusDescription: string;
   headers: Headers;
   cookies: Cookies;
@@ -55,5 +55,5 @@ export interface TestRequestEvent {
   request: FunctionRequest;
 }
 export interface TestResponseEvent extends TestRequestEvent {
-  response: FunctionResposne;
+  response: FunctionResponse;
 }

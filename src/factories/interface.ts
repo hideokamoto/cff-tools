@@ -6,7 +6,7 @@ import {
   Headers,
   Cookies,
   QueryString,
-  FunctionResposne,
+  FunctionResponse,
   TestResponseEvent,
   RequestContext,
 } from '../interfaces';
@@ -44,5 +44,5 @@ export interface TestResponseEventBuilder extends TestEventBuilder {
   setResponseHeaders(headers: Headers): TestResponseEventBuilder;
   setResponseCookies(cookies: Cookies): TestResponseEventBuilder;
   setResponseStatusCode(code: number): TestResponseEventBuilder;
-  setResponse(response: FunctionResposne): TestResponseEventBuilder;
+  setResponse(response: FunctionResponse): TestResponseEventBuilder;
 }

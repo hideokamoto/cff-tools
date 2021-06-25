@@ -7,7 +7,7 @@ import {
   Cookies,
   QueryString,
   RequestContext,
-  FunctionResposne,
+  FunctionResponse,
 } from '../interfaces';
 import { TestResponseEventBuilder } from './interface';
 
@@ -90,7 +90,7 @@ export class TestResponseEventFactory {
         event.response.statusCode = code;
         return this;
       },
-      setResponse(response: FunctionResposne) {
+      setResponse(response: FunctionResponse) {
         event.response = response;
         return this;
       },
