@@ -1,5 +1,16 @@
 # CloudFront Function management Tools (cff-tools)
 
+> ⚠️ **This package is deprecated and no longer maintained.**
+> 
+> This package has been deprecated because AWS CDK L2 Constructs for CloudFront Functions have been available since 2021 and provide all the functionality that cff-tools offered, plus additional features like Distribution integration and Infrastructure as Code management. The official AWS CDK support ensures you always have access to the latest CloudFront features.
+> 
+> **Please migrate to AWS CDK L2 Constructs for CloudFront Functions.**
+> 
+> - [AWS CDK CloudFront Functions Documentation](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudfront.Function.html)
+> - [AWS CDK CloudFront Module](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudfront-readme.html)
+
+---
+
 ## Install
 
 ```bash
