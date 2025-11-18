@@ -1,7 +1,7 @@
-import { DescribeFunctionResult } from 'aws-sdk/clients/cloudfront';
-import { TestEventBuilder } from './factories/interface';
-import { Function } from './functions';
-import { FunctionStage } from './interfaces';
+import type { DescribeFunctionResult } from 'aws-sdk/clients/cloudfront';
+import type { TestEventBuilder } from './factories/interface';
+import type { Function } from './functions';
+import type { FunctionStage } from './interfaces';
 
 export class FunctionTask {
   private readonly function: Function;
@@ -22,7 +22,7 @@ export class FunctionTask {
       event,
       stage
     );
-    if (result && result.FunctionErrorMessage) {
+    if (result?.FunctionErrorMessage) {
       throw new Error(result.FunctionErrorMessage);
     }
     return result;
@@ -52,11 +52,16 @@ export class FunctionTask {
     try {
       await this.function.describeFunction('DEVELOPMENT');
       await this.function.updateFunction();
-      if (options && options.withPublish) {
+      if (options?.withPublish) {
         await this.publish();
       }
     } catch (e) {
-      if (e.code === 'NoSuchFunctionExists') {
+      if (
+        typeof e === 'object' &&
+        e !== null &&
+        'code' in e &&
+        e.code === 'NoSuchFunctionExists'
+      ) {
         await this.function.createFunction();
         return;
       }

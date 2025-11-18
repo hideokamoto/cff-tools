@@ -1,15 +1,15 @@
-import { FunctionEventObject } from 'aws-sdk/clients/cloudfront';
-import {
-  FunctionRequest,
-  TestResponseEvent,
-  RequestMethod,
-  Headers,
+import type { FunctionEventObject } from 'aws-sdk/clients/cloudfront';
+import type {
   Cookies,
+  FunctionRequest,
+  FunctionResposne,
+  Headers,
   QueryString,
   RequestContext,
-  FunctionResposne,
+  RequestMethod,
+  TestResponseEvent,
 } from '../interfaces';
-import { TestResponseEventBuilder } from './interface';
+import type { TestResponseEventBuilder } from './interface';
 
 /**
  * Create viewer-request test event factory

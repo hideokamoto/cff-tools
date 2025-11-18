@@ -10,7 +10,7 @@ export type QueryString = {
 };
 export type Headers = {
   [key: string]: {
-    value: String;
+    value: string;
     multiValue?: Array<{
       value: string;
     }>;

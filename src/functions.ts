@@ -1,5 +1,6 @@
+import { readFileSync } from 'node:fs';
 import { CloudFront } from 'aws-sdk';
-import {
+import type {
   CreateFunctionRequest,
   DeleteFunctionRequest,
   DescribeFunctionRequest,
@@ -9,8 +10,7 @@ import {
   TestFunctionRequest,
   UpdateFunctionRequest,
 } from 'aws-sdk/clients/cloudfront';
-import { readFileSync } from 'fs';
-import { FunctionStage } from './interfaces';
+import type { FunctionStage } from './interfaces';
 
 export type CloudFrontFunctionRuntime = 'cloudfront-js-1.0';
 export interface FunctionProps {
